@@ -1,0 +1,29 @@
+{# limacharlie/map.jinja #}
+
+{% import_yaml 'limacharlie/defaults.yaml' as default_settings %}
+
+{% if salt['pillar.get']('limacharlie:lookup:sensor_url', '') != '' %}
+
+{% set kernel_family_map = salt['grains.filter_by']({
+    'Windows': {
+      'sensor_url': 'https://app.limacharlie.io/get/windows/64'
+    },
+    'Darwin': {
+      'sensor_url': 'https://app.limacharlie.io/get/mac/64'
+    },
+    'default': {
+      'sensor_url': 'https://app.limacharlie.io/get/linux/64'
+    },
+  }, grain='kernel_family', default='default', merge=salt['pillar.get']('limacharlie:lookup')) %}
+
+{% do default_settings.limacharlie.lookup.update(kernel_family_map) %}
+{% endif %}
+
+{% set limacharlie_settings = salt['pillar.get'](
+    'limacharlie',
+    default=default_settings.limacharlie,
+    merge=True,
+  )
+%}
+
+{# EOF #}

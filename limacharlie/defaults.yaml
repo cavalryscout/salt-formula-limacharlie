@@ -1,0 +1,8 @@
+limacharlie:
+  lookup:
+    sensor_url: ''
+  sensors:
+    sensor:
+      install_key: CHANGE_ME
+    chrome:
+      install_key: CHANGE_ME
